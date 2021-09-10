@@ -20,8 +20,14 @@ export default function App() {
       return statusObj;
     }).then(statusObj => {
       if (statusObj.status !== "granted") {
-        return;
+        throw new Error("Permisson not granted")
       }
+    }).then(() => {
+      return Notifications.getExpoPushTokenAsync()
+    }).then( data =>
+      console.log(data)
+    ).catch(err => {
+      return null
     });
   })
 
