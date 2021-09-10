@@ -3,6 +3,14 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import * as Notifications from "expo-notifications"
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true
+    }
+  }
+})
+
 export default function App() {
   useEffect(() => {
     Notifications.getPermissionsAsync().then(statusObj => {
