@@ -1,9 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import * as Notifications from "expo-notifications"
 
 export default function App() {
+  useEffect(() => {
+    Notifications.getPermissionsAsync().then(statusObj => {
+      if (statusObj.status !== "granted") {
+        return Notifications.requestPermissionsAsync()
+      }
+      return statusObj;
+    }).then(statusObj => {
+      if (statusObj.status !== "granted") {
+        return;
+      }
+    });
+  })
 
   const triggerNotificationHandler = () => {
     Notifications.scheduleNotificationAsync({
@@ -19,7 +31,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button title="Trigger notification" onPress={triggerNotificationHandler}/>
+      <Button title="Trigger notification" onPress={triggerNotificationHandler} />
       <StatusBar style="auto" />
     </View>
   );
